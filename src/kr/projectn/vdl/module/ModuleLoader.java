@@ -8,8 +8,11 @@ import kr.projectn.vdl.module.Instagram.*;
 import kr.projectn.vdl.utils.UrlUtil.ModuleMagic;
 
 /**
- * Created by Kim.K on 2017-05-03.
+ * Module loader class
+ *
+ * Created by qscx9512 on 2017-05-03.
  */
+
 public class ModuleLoader {
     private int magic;
     private String url;
@@ -38,6 +41,9 @@ public class ModuleLoader {
             case ModuleMagic.MODULE_KAKAO:
                 mod = new kakao();
                 return mod.Run(url);
+            case ModuleMagic.MODULE_DAUMKAKAO:
+                mod = new kakao();
+                return mod.Run(url.replace(ModuleMagic.URL_DAUMKAKAO, ModuleMagic.URL_KAKAO));
             case ModuleMagic.MODULE_FACEBOOK:
                 mod = new Facebook();
                 return mod.Run(url);
@@ -46,5 +52,15 @@ public class ModuleLoader {
                 return mod.Run(url);
         }
         return false;
+    }
+
+    public static void printModuleVersion() {
+        new VOD().getVersionString();
+        new Channel().getVersionString();
+        new tvcast().getVersionString();
+        new tvpot().getVersionString();
+        new kakao().getVersionString();
+        new Facebook().getVersionString();
+        new Instagram().getVersionString();
     }
 }
