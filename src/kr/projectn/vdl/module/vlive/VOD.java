@@ -14,10 +14,11 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.Collections;
 
 /**
- * Created by Kim.K on 2017-05-03.
+ * VLive extractor & downloader class
+ *
+ * Created by qscx9512 on 2017-05-03.
  */
 public class VOD implements ModuleInterface {
 
@@ -25,12 +26,19 @@ public class VOD implements ModuleInterface {
     private static final int min = 1;
     private static final int rev = 0;
     private HttpUtil hutil;
+    private RegexUtil regex;
 
-
+    /**
+     * Default constructor
+     */
     public VOD() {
+        regex = VDLMain.regex;
         hutil = VDLMain.util;
     }
 
+    /**
+     * Prints module version string
+     */
     @Override
     public void getVersionString() {
         System.out.println("VLive download module ver. " + main + "." + min + "." + rev);
@@ -39,11 +47,11 @@ public class VOD implements ModuleInterface {
     @Override
     public boolean Run(String url) {
         String status, vid_long, key;
-        PrintUtil p = new PrintUtil();
 
-        System.out.println("[" + this.toString() + "] 페이지 불러오는 중...");
+        System.out.println("[vlive-vod] 페이지 불러오는 중...");
         hutil.setClientConnection(url);
-        Matcher m = new RegexUtil("\\bvlive\\.video\\.init\\(([^)]+)\\)").Parse(hutil.requestByGet().getAsString());
+        Matcher m = regex.setRegexString("\\bvlive\\.video\\.init\\(([^)]+)\\)")
+                .Parse(hutil.requestByGet().getAsString());
         String[] param = m.group(1).split("[\\s\\W]*,[\\s\\W]*");
         status = param[2];
         vid_long = param[5];
@@ -57,16 +65,16 @@ public class VOD implements ModuleInterface {
                 return mod.Run(url);
             case "VOD_ON_AIR":
             case "BIG_EVENT_INTRO":
-                System.out.println("[" + this.toString() + "] 영상 정보 불러오는 중...");
+                System.out.println("[vlive-vod] 영상 정보 불러오는 중...");
                 break;
             case "LIVE_END":
-                p.printWarning("라이브 방송이 종료되었습니다. 현재 다시보기 준비중입니다.");
+                PrintUtil.printWarning("라이브 방송이 종료되었습니다. 현재 다시보기 준비중입니다.");
                 break;
             case "COMING_SOON":
-                p.printWarning("방송 준비중입니다. 잠시만 기다려주세요.");
+                PrintUtil.printWarning("방송 준비중입니다. 잠시만 기다려주세요.");
                 break;
             case "CANCELED":
-                p.printWarning("방송이 예기치 않게 취소되었습니다.");
+                PrintUtil.printWarning("방송이 예기치 않게 취소되었습니다.");
                 break;
         }
 
@@ -93,7 +101,8 @@ public class VOD implements ModuleInterface {
 
         if(title.isEmpty()) {
             hutil.setClientConnection(url);
-            m = new RegexUtil("og:title.+(\\[[^\"]*+)").Parse(hutil.requestByGet().getAsString());
+            m = regex.setRegexString("og:title.+(\\[[^\"]*+)")
+                    .Parse(hutil.requestByGet().getAsString());
             title = m.group(1);
         }
 
@@ -115,7 +124,8 @@ public class VOD implements ModuleInterface {
                     .get("size").getAsLong();
         }
 
-        System.out.println("[" + this.toString() + "] 영상 내려받는 중...");
+        System.out.println("[vlive-vod] 영상 내려받는 중...");
+        System.out.println("영상 타이틀: " + title);
         System.out.println("영상 해상도: " + videoRes[arraySize - 1]);
         System.out.println("파일 사이즈: " + (float)(fileSize[arraySize - 1] / (1024 * 1024)) + "MB");
 
