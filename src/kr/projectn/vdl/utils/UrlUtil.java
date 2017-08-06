@@ -12,8 +12,11 @@ import com.google.gson.*;
 import kr.projectn.vdl.utils.HttpUtil;
 
 /**
- * Created by Kim.K on 2017-05-03.
+ * URL check utility class
+ *
+ * Created by qscx9512 on 2017-05-03.
  */
+
 public class UrlUtil {
     private String requestVCode(String code) {
         HttpUtil util = VDLMain.util;
@@ -25,13 +28,18 @@ public class UrlUtil {
 
         String JsonString = util.requestByGet().getAsString();
         //Json parse로 처리할것
-        JsonObject jsonObj = new JsonParser().parse(JsonString).getAsJsonObject();
+        try {
+            JsonObject jsonObj = new JsonParser().parse(JsonString).getAsJsonObject();
 
-        if (!jsonObj.get("status").getAsString().equals("err")) {
-            return jsonObj.get("url").getAsString();
+            if (!jsonObj.get("status").getAsString().equals("err")) {
+                return jsonObj.get("url").getAsString();
+            }
+        } catch (Exception e) {
+            ExceptionReportUtil.reportExceptionToFile(e);
+            return "";
         }
 
-        return null;
+        return JsonString;
     }
 
     public int setModuleId(String url) {
@@ -45,6 +53,8 @@ public class UrlUtil {
             return ModuleMagic.MODULE_DAUM;
         } else if (url.contains(ModuleMagic.URL_KAKAO)) {
             return ModuleMagic.MODULE_KAKAO;
+        } else if (url.contains(ModuleMagic.URL_DAUMKAKAO)) {
+            return ModuleMagic.MODULE_DAUMKAKAO;
         } else if (url.contains(ModuleMagic.URL_FACEBOOK)) {
             return ModuleMagic.MODULE_FACEBOOK;
         } else if (url.contains(ModuleMagic.URL_INSTAGRAM)) {
@@ -71,14 +81,16 @@ public class UrlUtil {
         int MODULE_NAVER = 0x12;
         int MODULE_DAUM = 0x13;
         int MODULE_KAKAO = 0x14;
-        int MODULE_FACEBOOK = 0x15;
-        int MODULE_INSTAGRAM = 0x16;
+        int MODULE_DAUMKAKAO = 0x15;
+        int MODULE_FACEBOOK = 0x16;
+        int MODULE_INSTAGRAM = 0x17;
 
         String URL_VLIVE = "vlive.tv/video";
         String URL_VLIVE_CHANNEL = "channels.vlive.tv";
         String URL_NAVER = "tv.naver.com";
         String URL_DAUM = "tvpot.daum.net";
         String URL_KAKAO = "tv.kakao.com";
+        String URL_DAUMKAKAO = "kakaotv.daum.net";
         String URL_FACEBOOK = "facebook.com";
         String URL_INSTAGRAM = "instagram.com";
     }
