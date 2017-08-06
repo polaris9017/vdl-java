@@ -4,16 +4,15 @@ import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 
 /**
- * Created by Kim.K on 2017-05-03.
+ * Line printing utility class
+ *
+ * Created by qscx9512 on 2017-05-03.
  */
+
 public class PrintUtil {
-    private ColoredPrinter p;
 
-    public PrintUtil() {
-        p = new ColoredPrinter.Builder(1, false).build();
-    }
-
-    public void printError(String str) {
+    public static void printError(String str) {
+        ColoredPrinter p = new ColoredPrinter.Builder(1, false).build();
         p.debugPrint(str,
                 2,
                 Ansi.Attribute.NONE,
@@ -22,14 +21,15 @@ public class PrintUtil {
         p.clear();
     }
 
-    public void printWarning(String str) {
+    public static void printWarning(String str) {
+        ColoredPrinter p = new ColoredPrinter.Builder(1, false).build();
         p.println(str, Ansi.Attribute.NONE,
                 Ansi.FColor.YELLOW,
                 Ansi.BColor.NONE);
         p.clear();
     }
 
-    public void seperateLine(int len) {
+    public static void seperateLine(int len) {
         for(int i = 0; i < len;i++) {
             System.out.print("=");
         }

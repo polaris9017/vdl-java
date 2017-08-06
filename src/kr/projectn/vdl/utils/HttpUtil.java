@@ -12,17 +12,23 @@ import org.apache.http.impl.client.HttpClients;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Kim.K on 2017-05-03.
+ * Http request utility class
+ *
+ * Created by qscx9512 on 2017-05-03.
  */
+
 public class HttpUtil {
     private CloseableHttpClient client;
     private CloseableHttpResponse response;
     private String strUserAgent;
     private URIBuilder builder;
     private URI uri;
+    private Map<String, String> customHeader;
 
     private HttpUtil() {
         strUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36";
@@ -41,14 +47,17 @@ public class HttpUtil {
         HttpGet hGet = new HttpGet(uri);
         hGet.addHeader("User-Agent", strUserAgent);
         hGet.addHeader("Accept-Language", "ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4,ja;q=0.2");
-
+        //http://stove99.tistory.com/96
+        if (!customHeader.isEmpty()) {
+            for (Map.Entry<String, String> el : customHeader.entrySet()) {
+                hGet.addHeader(el.getKey(), el.getValue());
+            }
+        }
         try {
             response = client.execute(hGet);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            System.err.println("[HttpUtil @ " + client.toString() + "] Exception thrown\nMessage: " + e.getMessage());
-            System.err.println("Error trace: \n");
-            e.printStackTrace();
+            ExceptionReportUtil.reportExceptionToFile(e);
         }
 
         return this;
@@ -58,15 +67,31 @@ public class HttpUtil {
         HttpPost hPost = new HttpPost(uri);
         hPost.addHeader("User-Agent", strUserAgent);
         hPost.addHeader("Accept-Language", "ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4,ja;q=0.2");
+        //http://stove99.tistory.com/96
+        if (!customHeader.isEmpty()) {
+            for (Map.Entry<String, String> el : customHeader.entrySet()) {
+                hPost.addHeader(el.getKey(), el.getValue());
+            }
+        }
         try {
             response = client.execute(hPost);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            System.err.println("[HttpUtil @ " + client.toString() + "] Exception thrown\nMessage: " + e.getMessage());
-            System.err.println("Error trace: \n");
-            e.printStackTrace();
+            ExceptionReportUtil.reportExceptionToFile(e);
         }
 
+        return this;
+    }
+
+    public HttpUtil requestByGet(Map<String, String> header) {
+        customHeader = header;
+        this.requestByGet();
+        return this;
+    }
+
+    public HttpUtil requestByPost(Map<String, String> header) {
+        customHeader = header;
+        this.requestByPost();
         return this;
     }
 
@@ -86,9 +111,7 @@ public class HttpUtil {
             }
         }
         catch (IOException e) {
-            System.err.println("[HttpUtil] Exception thrown.\nMessage: " + e.getMessage());
-            System.err.println("Error trace: \n");
-            e.printStackTrace();
+            ExceptionReportUtil.reportExceptionToFile(e);
         }
         finally {
             if(reader != null) {
@@ -96,9 +119,7 @@ public class HttpUtil {
                     reader.close();
                 }
                 catch (IOException e) {
-                    System.err.println("[HttpUtil] Exception thrown.\nMessage: " + e.getMessage());
-                    System.err.println("Error trace: \n");
-                    e.printStackTrace();
+                    ExceptionReportUtil.reportExceptionToFile(e);
                 }
             }
         }
@@ -111,14 +132,13 @@ public class HttpUtil {
             ret = response.getEntity().getContent();
         } catch (UnsupportedOperationException | IOException e) {
             // TODO Auto-generated catch block
-            System.err.println("[HttpUtil] Exception thrown.\nMessage: " + e.getMessage());
-            System.err.println("Error trace: \n");
-            e.printStackTrace();
+            ExceptionReportUtil.reportExceptionToFile(e);
         }
         return ret;
     }
 
     public void setClientConnection(String url) {
+        customHeader = new HashMap<String, String>();
         builder = new URIBuilder();
         try {
             if (url.contains("https")) {  //Determine SSL Connection
@@ -141,9 +161,7 @@ public class HttpUtil {
             uri = builder.build();
         } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
-            System.err.println("[HttpUtil -> UriBuilder @ " + builder.hashCode() + "] URI Syntax exception.\nMessage: " + e.getMessage());
-            System.err.println("Error trace: \n");
-            e.printStackTrace();
+            ExceptionReportUtil.reportExceptionToFile(e);
         }
     }
 
@@ -152,9 +170,7 @@ public class HttpUtil {
         builder = builder.setParameters(param);
         uri = builder.build();
         } catch (URISyntaxException e) {
-            System.err.println("[HttpUtil -> UriBuilder @ " + builder.hashCode() + "] URI Syntax exception.\nMessage: " + e.getMessage());
-            System.err.println("Error trace: \n");
-            e.printStackTrace();
+            ExceptionReportUtil.reportExceptionToFile(e);
         }
     }
 
@@ -168,8 +184,24 @@ public class HttpUtil {
             in.close();
             out.close();
         } catch (UnsupportedOperationException | IOException e) {
+            ExceptionReportUtil.reportExceptionToFile(e);
+            return false;
+        }
+        return true;
+    }
+
+    public boolean writeStream(String title) {
+        try {
+            InputStream ret = response.getEntity().getContent();
+            BufferedInputStream in = new BufferedInputStream(ret);
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(title), true));
+            int inByte;
+            while ((inByte = in.read()) != -1) out.write(inByte);
+            in.close();
+            out.close();
+        } catch (UnsupportedOperationException | IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            ExceptionReportUtil.reportExceptionToFile(e);
             return false;
         }
         return true;

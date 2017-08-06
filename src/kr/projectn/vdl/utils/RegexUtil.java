@@ -4,13 +4,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Kim.K on 2017-05-03.
+ * Regular expression utility class
+ *
+ * Created by qscx9512 on 2017-05-03.
  */
+
 public class RegexUtil {
     private String regex;
 
-    public RegexUtil(String regex) {
-        this.regex = regex;
+    private RegexUtil() {
+    }
+
+    private static class Singleton {
+        private static final RegexUtil instance = new RegexUtil();
+    }
+
+    public static RegexUtil getInstance() {
+        return Singleton.instance;
+    }
+
+    public RegexUtil setRegexString(String str) {
+        regex = str;
+        return this;
     }
 
     public Matcher Parse(String str) {
