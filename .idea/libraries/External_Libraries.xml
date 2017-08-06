@@ -11,7 +11,6 @@
       <root url="jar://$PROJECT_DIR$/lib/httpcore-4.4.6.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jansi-1.11.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/JCDP-2.0.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/junit-4.9.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/commons-cli-1.4-javadoc.jar!/" />
