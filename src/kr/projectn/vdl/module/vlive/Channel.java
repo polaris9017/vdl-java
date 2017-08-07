@@ -94,9 +94,6 @@ public class Channel implements ModuleInterface {
                     .get(i).getAsJsonObject().get("videoSeq")
                     .getAsString();
         }
-
         return videoList;
     }
-
-
 }
