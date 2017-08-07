@@ -7,6 +7,7 @@ import kr.projectn.vdl.application.VDLMain;
 import kr.projectn.vdl.module.ModuleInterface;
 import kr.projectn.vdl.utils.HttpUtil;
 import kr.projectn.vdl.utils.RegexUtil;
+import kr.projectn.vdl.utils.UrlUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -85,11 +86,11 @@ public class tvcast implements ModuleInterface {
         }
 
         System.out.println("[tvcast] 영상 내려받는 중...");
-        System.out.println("영상 타이틀: " + title);
+        System.out.println("영상 타이틀: " + UrlUtil.validateFilename(title));
         System.out.println("영상 해상도: " + videoRes[arraySize - 1]);
         System.out.println("파일 사이즈: " + (float) (fileSize[arraySize - 1] / (1024 * 1024)) + "MB");
 
         hutil.setClientConnection(cdnUrl[arraySize - 1]);
-        return hutil.requestByGet().writeFile(title + ".mp4");
+        return hutil.requestByGet().writeFile(UrlUtil.validateFilename(title) + ".mp4");
     }
 }

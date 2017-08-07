@@ -70,6 +70,19 @@ public class UrlUtil {
         return 0xff;
     }
 
+    public static String validateFilename(String str) {
+        final char[] illegalChar = {'/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':'};
+        final char[] replChar = {',', ' ', ' ', ' ', ' ', ' ', '\'', ' ', '.', ' ', '(', ')', ' ', '\'', ' '};
+        String str_validate = str;
+
+        for (int i = 0; i < illegalChar.length; i++) {
+            if (str_validate.contains(Character.toString(illegalChar[i]))) {
+                str_validate = str_validate.replace(illegalChar[i], replChar[i]);
+            }
+        }
+        return str_validate;
+    }
+
     /**
      * Created by Kim.K on 2017-05-03.
      */

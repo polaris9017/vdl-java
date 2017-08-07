@@ -7,6 +7,7 @@ import kr.projectn.vdl.module.ModuleInterface;
 import kr.projectn.vdl.utils.ExceptionReportUtil;
 import kr.projectn.vdl.utils.HttpUtil;
 import kr.projectn.vdl.utils.RegexUtil;
+import kr.projectn.vdl.utils.UrlUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -75,13 +76,12 @@ public class Facebook implements ModuleInterface {
 
         String title = "";
         try {
-            title = jsonObj.get("title").getAsString();
-            title = validateFilename(title);
+            title = UrlUtil.validateFilename(jsonObj.get("title").getAsString());
         } catch (Exception e) {
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
                 System.out.print("저장할 파일 명: ");
-                title = in.readLine();
+                title = UrlUtil.validateFilename(in.readLine());
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 ExceptionReportUtil.reportExceptionToFile(e1);
@@ -94,19 +94,6 @@ public class Facebook implements ModuleInterface {
 
         hutil.setClientConnection(cdnUrl);
 
-        return hutil.requestByGet().writeFile("[facebook]" + title + ".mp4");
-    }
-
-    private String validateFilename(String str) {
-        final char[] illegalChar = {'/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':'};
-        final char[] replChar = {',', ' ', ' ', ' ', ' ', ' ', '\'', ' ', '.', ' ', '(', ')', ' ', '\'', ' '};
-        String str_validate = str;
-
-        for (int i = 0; i < illegalChar.length; i++) {
-            if (str_validate.contains(Character.toString(illegalChar[i]))) {
-                str_validate = str_validate.replace(illegalChar[i], replChar[i]);
-            }
-        }
-        return str_validate;
+        return hutil.requestByGet().writeFile("[facebook]" + UrlUtil.validateFilename(title) + ".mp4");
     }
 }

@@ -97,6 +97,4 @@ public class Channel implements ModuleInterface {
 
         return videoList;
     }
-
-
 }
