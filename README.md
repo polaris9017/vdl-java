@@ -8,11 +8,14 @@ VLive Video Downloader(a.k.a vdl) is video downloader inspired by [youtube-dl](h
 
 ## Changelog
 
- - 2.0.0 (2017.03.30) - Codename Alwayz
+ - 2.0.0 (2017.08.06) - Codename Alwayz
    1. Download video from Instagram
    2. Download video from Facebook
    3. Improve Code Structure
    4. Bug fix
+   
+ - 2.0.1 (2017.08.07) - Codename Alwayz
+    1. Bug fix
   
 ## Features
 
@@ -42,6 +45,7 @@ or execute directly.
 
  - Support download from
    - Twitter
+ - Download subtitle from VLive 
 
 and more...!
 
@@ -83,6 +87,10 @@ This program is licensed under the Apache Software License, Version 2.0.
  - Java Colored Debug Printer (JCDP) (https://github.com/dialex/JCDP)
  
  Copyright (c) 2011-* Diogo Nunes, licensed under the MIT License
+ 
+ - HLSParserJ (https://github.com/Comcast/hlsparserj)
+ 
+ Copyright (c) 2014 Comcast Cable Communications Management, LLC, licensed under the Apache License, Version 2.0
  
  ## Bug report
  
