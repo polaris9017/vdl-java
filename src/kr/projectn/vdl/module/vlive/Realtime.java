@@ -101,7 +101,7 @@ public class Realtime implements ModuleInterface {
                                     + stream.getTitle()
                     );
                     System.out.println("Seq: " + seq + "; media: " + stream.getTitle() + "; dur: " + stream.getDuration());
-                    hutil.requestByGet().writeStream(title + ".mp4");
+                    hutil.requestByGet().writeStream(UrlUtil.validateFilename(title) + ".mp4");
                 }
                 seq_prev = seq;
             }

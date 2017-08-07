@@ -5,10 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import kr.projectn.vdl.application.VDLMain;
 import kr.projectn.vdl.module.ModuleInterface;
-import kr.projectn.vdl.utils.ExceptionReportUtil;
-import kr.projectn.vdl.utils.HttpUtil;
-import kr.projectn.vdl.utils.PrintUtil;
-import kr.projectn.vdl.utils.RegexUtil;
+import kr.projectn.vdl.utils.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.Attributes;
@@ -98,14 +95,14 @@ public class tvpot implements ModuleInterface {
         }
 
         System.out.println("[tvpot] 영상 내려받는 중...");
-        System.out.println("영상 타이틀: " + title);
+        System.out.println("영상 타이틀: " + UrlUtil.validateFilename(title));
         System.out.println("영상 해상도: " + videoRes[metaData.size() - 1]);
         System.out.println("파일 사이즈: " + (float) (vid_fsz[metaData.size() - 1] / (1024 * 1024)) + "MB");
 
 
         hutil.setClientConnection(cdnUrl[metaData.size() - 1]);
 
-        return hutil.requestByGet().writeFile("[tvpot]" + title + ".mp4");
+        return hutil.requestByGet().writeFile("[tvpot]" + UrlUtil.validateFilename(title) + ".mp4");
     }
 
     private class XmlHandler extends DefaultHandler {

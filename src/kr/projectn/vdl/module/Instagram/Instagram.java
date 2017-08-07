@@ -49,6 +49,5 @@ public class Instagram implements ModuleInterface {
 
         hutil.setClientConnection(cdnUrl);
         return hutil.requestByGet().writeFile("[instagram] " + title + ".mp4");
-
     }
 }
