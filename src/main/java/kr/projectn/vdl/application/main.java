@@ -183,7 +183,11 @@ public class main {
                     String title = el.getTitleList().poll();
                     logger.info("Downloading video (" + idx++ + "/" + responseList.size() + ")");
                     client.setClientConnection(url);
-                    client.request().writeFile(FilePathValidator.validateFilename(title) + ".mp4");
+                    if (URLValidator.getSocialPostCode(url).isEmpty()) {
+                        client.request().writeFile(FilePathValidator.validateFilename(title) + ".mp4");
+                    } else{
+                        client.request().writeFile(URLValidator.getSocialPostCode(url));
+                    }
 
                     if (hasSubtitle) {
                         for (Response.Subtitle sub : el.getSubtitleList(downloadList.peek())) {
