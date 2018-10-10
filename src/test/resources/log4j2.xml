@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <RollingRandomAccessFile name="DebugLog" fileName="log/vdl.log" filePattern="log/vdl-run-%d{yyyy-MM-dd_HH}_%i.log" immediateFlush="true" append="true" ignoreExceptions="false">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%l] %-5level - %m%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="500"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="Exception" fileName="log/excetpion-${date:yyyy-MM-dd-HH.mm.ss.SSS}.log" filePattern="exception/exception-%d{yyyy-MM-dd_HH}_%i.log" immediateFlush="false" append="true" ignoreExceptions="false">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%l] %-5level - %throwable{full}%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="4 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="500"/>
+        </RollingRandomAccessFile>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="ACCEPT"/>
+            <!--<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%l] %-5level - %m%n"/>-->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%l] %highlight{%-5level} - %highlight{%m%n}" disableAnsi="false"/>
+        </Console>
+
+        <Async name="debug-file-async" includeLocation="true">
+            <AppenderRef ref="DebugLog"/>
+        </Async>
+
+        <Async name="exception-async" includeLocation="true">
+            <AppenderRef ref="Exception"/>
+        </Async>
+
+        <Async name="console-async" includeLocation="true">
+            <AppenderRef ref="console"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="kr.projectn.vdl" additivity="false">
+            <appender-ref ref="debug-file-async" level="DEBUG"/>
+            <appender-ref ref="console-async" level="INFO"/>
+            <appender-ref ref="exception-async" level="ERROR"/>
+        </Logger>
+
+        <Root level="TRACE">
+            <!--
+            <appender-ref ref="debug-file-async" level="DEBUG"/>
+            <appender-ref ref="console-async" level="INFO"/>
+            -->
+            <appender-ref ref="exception-async" level="ERROR"/>
+        </Root>
+    </Loggers>
+</Configuration>
