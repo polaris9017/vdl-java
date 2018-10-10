@@ -13,6 +13,12 @@ VLive Video Downloader(a.k.a vdl) is video downloader inspired by [youtube-dl](h
    2. Download video from Facebook
    3. Improve Code Structure
    4. Bug fix
+
+ - 2.1.0 (2018.10.11) - Codename Muse
+   1. Removed downloading video from Facebook (End of Facebook official API support)
+   2. Changed build system to Gradle
+   3. Improve Code Structure
+   4. Bug fix
   
 ## Features
 
@@ -21,18 +27,18 @@ VLive Video Downloader(a.k.a vdl) is video downloader inspired by [youtube-dl](h
  - Download video from Naver TVCast
  - Download video from Daum TVPot
  - Download video from Kakao TV
- - Download video from Facebook
  - Download video from Instagram
  
  
 ## Usage
 
-> vdl [-v | -d] `<url>`
+> vdl [-v | -d | -l `<url1>` ... | -s] 
 
 **Options**
--v: Show Version
--h: Show help
--d `<URL>`: Download video from URL
+ - -h,--help :                     Prints options. Other options will be ignored.
+ - -l,--list <arg1> <arg2> ... :   Directly download from list. Values are separated to ' '(Blank)
+ - -s,--subtitle :                 Download subtitle if possible
+ - -v,--version :                  prints version. Other options will be ignored.
 
 or execute directly.
 
@@ -49,11 +55,24 @@ and more...!
 
 ## How to Build
 
-Just clone this repository and open with IntelliJ Idea
+To create an distribution executable contained in zip file using Gradle, 
+run the following command in the directory where build.gradle is (Note: Gradle must be installed):
+
+    gradle clean build jar
+
+This will create the executable contained zip file under `build/distributions/vdl-{version}.zip`
 
 ## API
 
-Coming soon...
+[ ![Download](https://api.bintray.com/packages/polaris9017/vdl/vdl-core/images/download.svg) ](https://bintray.com/polaris9017/vdl/vdl-core/_latestVersion)
+
+Cores has been seperated to [vdl-core](https://github.com/polaris9017/vdl-core)
+
+##Links
+- [Github project](https://github.com/polaris9017/vdl-java)
+- [Issue tracker](https://github.com/polaris9017/vdl-java/issues)
+- [vdl core API Bintray page](https://bintray.com/polaris9017/vdl/vdl-core)
+- [vdl core API Github project](https://github.com/polaris9017/vdl-core)
 
 
 ## License
@@ -63,26 +82,14 @@ This program is licensed under the Apache Software License, Version 2.0.
  Dependencies for this program follows by...
 
 
-
  - Apache Commons Library (CLI, Codec, Logging) (http://commons.apache.org)
  
- Copyright (c) 2002-2017 The Apache Software Foundation, licensed under the Apache Software License, Version 2.0.
+ Copyright (c) 2002-2018 The Apache Software Foundation, licensed under the Apache Software License, Version 2.0.
+ 
+  - Apache Log4j 2 (https://logging.apache.org/log4j)
+  
+  Copyright (c) 1999-2018 The Apache Software Foundation, licensed under the Apache Software License, Version 2.0.
 
- - gson (https://github.com/google/gson)
- 
- Copyright (c) 2008 Google Inc., licensed under the Apache Software License, Version 2.0
- 
- - hamcrest-core (https://github.com/hamcrest/JavaHamcrest)
- 
- Copyright (c) 2000-2015 www.hamcrest.org, licensed under the The 2-Clause BSD License
- 
- - Apache HttpComponents (https://hc.apache.org)
- 
- Copyright (c) 2005-2017 The Apache Software Foundation, licensed under the Apache Software License, Version 2.0
- 
- - Java Colored Debug Printer (JCDP) (https://github.com/dialex/JCDP)
- 
- Copyright (c) 2011-* Diogo Nunes, licensed under the MIT License
  
  ## Bug report
  
