@@ -68,6 +68,8 @@ This will create the executable contained zip file under `build/distributions/vd
 
 Cores has been seperated to [vdl-core](https://github.com/polaris9017/vdl-core)
 
+
+
 ##Links
 - [Github project](https://github.com/polaris9017/vdl-java)
 - [Issue tracker](https://github.com/polaris9017/vdl-java/issues)
