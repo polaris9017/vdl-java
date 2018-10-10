@@ -70,7 +70,7 @@ Cores has been seperated to [vdl-core](https://github.com/polaris9017/vdl-core)
 
 
 
-##Links
+## Links
 - [Github project](https://github.com/polaris9017/vdl-java)
 - [Issue tracker](https://github.com/polaris9017/vdl-java/issues)
 - [vdl core API Bintray page](https://bintray.com/polaris9017/vdl/vdl-core)
