@@ -42,6 +42,24 @@ VLive Video Downloader(a.k.a vdl) is video downloader inspired by [youtube-dl](h
 
 or execute directly.
 
+## How to use
+
+### For Windows
+
+1. Unzip vdl-{version}.zip (or .tar)
+2. Move into `vdl-{version}/bin` and run `vdl.bat` on terminal with options or directly
+
+### For *nix
+
+1. Unzip vdl-{version}.zip (or .tar)
+2. Move into `vdl-{version}/bin` and run `./vdl` on terminal with options or directly
+
+### Common
+**Required Java JRE 1.8 or more**
+
+- If you run project directly, to stop adding URL, put `;` after last putted URL.
+
+
 
 
 ## Planned
